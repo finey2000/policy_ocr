@@ -74,5 +74,21 @@ describe PolicyOcr::LinesReader do
         expect(policy.illegible_count).to eq(2)
       end
     end
+
+    context 'with all illegible characters' do
+      let(:lines) do
+        [
+          "                           ",
+          "________ __________________",
+          "                           "
+        ]
+      end
+
+      it "returns invalid policy number" do
+        policy = subject
+        expect(policy.number).to eq("?????????")
+        expect(policy.valid?).to be false
+      end
+    end
   end
 end

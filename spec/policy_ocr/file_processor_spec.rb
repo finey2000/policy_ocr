@@ -59,4 +59,34 @@ describe PolicyOcr::FileProcessor do
       ])
     end
   end
+
+  describe "#perform" do
+    subject { described_class.perform(input_file, output_path) }
+
+    before do
+      File.write(output_path, '') if File.exist?(output_path)
+    end
+
+    let(:input_file) { fixture_path('sample.txt') }
+    let(:output_path) { "tmp/output.txt" }
+
+
+    it "exports policy numbers to output file" do
+      subject
+      result = File.read(output_path).split("\n")
+      expect(result).to eq([
+        "000000000",
+        "111111111 ERR",
+        "222222222 ERR",
+        "333333333 ERR",
+        "444444444 ERR",
+        "555555555 ERR",
+        "666666666 ERR",
+        "777777777 ERR",
+        "888888888 ERR",
+        "999999999 ERR",
+        "123456789"
+      ])
+    end
+  end
 end
