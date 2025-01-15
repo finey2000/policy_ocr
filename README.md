@@ -19,6 +19,11 @@ See [problem statement](problem_statement.md) for more details.
    bundle install
    ```
 
+### System Dependencies
+```plaintext
+Ruby 3.0.1
+```
+
 ## Usage
 
 To use the application, you can call the `PolicyOcr::FileProcessor.perform` method with the input and output file paths.
