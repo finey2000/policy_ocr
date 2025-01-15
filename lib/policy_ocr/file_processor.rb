@@ -1,6 +1,5 @@
 require_relative 'lines_reader'
 require 'fileutils'
-require 'pry'
 
 module PolicyOcr
   # The FileProcessor class is responsible for processing input files

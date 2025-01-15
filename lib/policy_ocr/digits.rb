@@ -23,9 +23,9 @@ module PolicyOcr
             .freeze
 
     FOUR = "   " +
-          "|_|" +
-          "  |"
-          .freeze
+           "|_|" +
+           "  |"
+           .freeze
 
     FIVE = " _ " +
            "|_ " +
