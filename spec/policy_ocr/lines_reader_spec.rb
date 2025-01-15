@@ -90,5 +90,13 @@ describe PolicyOcr::LinesReader do
         expect(policy.valid?).to be false
       end
     end
+
+    context 'with empty strings' do
+      let(:lines) { ["", "", "" ] }
+
+      it "returns invalid policy number" do
+        expect(subject.number).to eq("?????????")
+      end
+    end
   end
 end

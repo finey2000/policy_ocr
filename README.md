@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Policy OCR (Optical Character Recognition) application is designed to process input files containing OCR digit lines, extract policy numbers, validate them, and export the results to an output file. This application is built using Ruby and includes several classes to handle different aspects of the process.
+The Policy OCR (Optical Character Recognition) application is designed to process input files containing OCR digit lines, extract policy numbers, validate them, and export the results to an output file. This application is built using Ruby and includes a few classes to handle different aspects of the process.
 
 See [problem statement](problem_statement.md) for more details.
 

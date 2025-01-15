@@ -13,7 +13,7 @@ module PolicyOcr
     # @param number [String] the policy number
     # @raise [RuntimeError] if the number is not a valid string
     def initialize(number)
-      raise 'Number must be a valid string' if number.class != String || number.empty?
+      raise ArgumentError.new('Number must be a valid string') if number.class != String || number.empty?
 
       @number = number
       @illegible_count = number.count('?')

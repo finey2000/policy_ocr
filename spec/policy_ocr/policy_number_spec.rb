@@ -24,6 +24,22 @@ describe PolicyOcr::PolicyNumber do
         expect(policy.valid?).to be false
       end
     end
+
+    context 'when given a non strong' do
+      let(:number) { nil }
+
+      it "raises argument error" do
+        expect { subject }.to raise_error(ArgumentError, 'Number must be a valid string')
+      end
+    end
+
+    context 'when given an empty string' do
+      let(:number) { '' }
+
+      it 'raises an ArgumentError' do
+        expect { subject }.to raise_error(ArgumentError, 'Number must be a valid string')
+      end
+    end
   end
 
   describe "#to_str" do
