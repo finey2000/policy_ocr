@@ -13,12 +13,14 @@ module PolicyOcr
       def parse(lines)
         return nil if lines.nil? || lines.size < 3
     
+        segments = []
         number_str = (0...27).step(3).map do |index|
           segment = extract_segment(lines, index)
+          segments << segment
           Digits::MAP.fetch(segment, "?")
         end.join
   
-        PolicyNumber.new(number_str)
+        PolicyNumber.new(number_str, encoded_form: segments)
       end
     
       private

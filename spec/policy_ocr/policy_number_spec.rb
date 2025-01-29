@@ -1,4 +1,5 @@
 require_relative '../../lib/policy_ocr/file_processor'
+require_relative '../../lib/policy_ocr/digits'
 
 describe PolicyOcr::PolicyNumber do
 
@@ -69,6 +70,124 @@ describe PolicyOcr::PolicyNumber do
 
       it "returns a number with ERR code" do
         expect(subject).to eq('86110??36 ILL')
+      end
+    end
+  end
+
+  describe "#guess_corrections" do
+    subject { policy.send(:guess_corrections) }
+
+    let(:policy) { described_class.new(number, encoded_form: encoded_form, run_checks: false) }
+    let(:number) { '' }
+    let(:encoded_form) { [] }
+
+    context 'when given a valid number with invalid checksum' do
+      let(:number) { '111111111' }
+
+      let(:encoded_form) do
+        [
+          PolicyOcr::Digits::ONE,
+          PolicyOcr::Digits::ONE,
+          PolicyOcr::Digits::ONE,
+          PolicyOcr::Digits::ONE,
+          PolicyOcr::Digits::ONE,
+          PolicyOcr::Digits::ONE,
+          PolicyOcr::Digits::ONE,
+          PolicyOcr::Digits::ONE,
+          PolicyOcr::Digits::ONE
+        ]
+      end
+
+      it "returns possible corrections" do
+        expect(subject).to eq(
+          [
+            "711111111",
+            "171111111",
+            "117111111",
+            "111711111",
+            "111171111",
+            "111117111",
+            "111111711",
+            "111111171",
+            "111111117"
+          ]
+        )
+      end
+    end
+  end
+
+  describe "#validate_and_correct" do
+    subject { policy.validate_and_correct }
+
+    let(:policy) { described_class.new(number, encoded_form: encoded_form, run_checks: true) }
+    let(:number) { '' }
+    let(:encoded_form) { [] }
+
+    context 'when given a valid number with invalid checksum' do
+      let(:number) { '111111111' }
+
+      let(:encoded_form) do
+        [
+          PolicyOcr::Digits::ONE,
+          PolicyOcr::Digits::ONE,
+          PolicyOcr::Digits::ONE,
+          PolicyOcr::Digits::ONE,
+          PolicyOcr::Digits::ONE,
+          PolicyOcr::Digits::ONE,
+          PolicyOcr::Digits::ONE,
+          PolicyOcr::Digits::ONE,
+          PolicyOcr::Digits::ONE
+        ]
+      end
+
+      it "returns possible corrections" do
+        expect(subject).to eq(['711111111'])
+      end
+    end
+
+    context 'when given a valid number 777777777' do
+      let(:number) { '777777777' }
+
+      let(:encoded_form) do
+        [
+          PolicyOcr::Digits::SEVEN,
+          PolicyOcr::Digits::SEVEN,
+          PolicyOcr::Digits::SEVEN,
+          PolicyOcr::Digits::SEVEN,
+          PolicyOcr::Digits::SEVEN,
+          PolicyOcr::Digits::SEVEN,
+          PolicyOcr::Digits::SEVEN,
+          PolicyOcr::Digits::SEVEN,
+          PolicyOcr::Digits::SEVEN
+        ]
+      end
+
+      it "returns possible corrections" do
+        expect(subject).to eq(['777777177'])
+      end
+    end
+
+    context 'when given a malformed number' do
+      let(:number) { '77777717?' }
+
+      let(:encoded_form) do
+        [
+          PolicyOcr::Digits::SEVEN,
+          PolicyOcr::Digits::SEVEN,
+          PolicyOcr::Digits::SEVEN,
+          PolicyOcr::Digits::SEVEN,
+          PolicyOcr::Digits::SEVEN,
+          PolicyOcr::Digits::SEVEN,
+          PolicyOcr::Digits::ONE,
+          PolicyOcr::Digits::SEVEN,
+          " | " +
+          "  |" +
+          "  |"
+        ]
+      end
+
+      it "returns possible corrections" do
+        expect(subject).to eq(['777777177'])
       end
     end
   end

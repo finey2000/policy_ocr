@@ -46,15 +46,15 @@ describe PolicyOcr::FileProcessor do
       result = File.read(output_path).split("\n")
       expect(result).to eq([
         "000000000",
-        "111111111 ERR",
+        "711111111",
         "222222222 ERR",
-        "333333333 ERR",
+        "333393333",
         "444444444 ERR",
-        "555555555 ERR",
-        "666666666 ERR",
-        "777777777 ERR",
-        "888888888 ERR",
-        "999999999 ERR",
+        "555555555 AMB",
+        "666666666 AMB",
+        "777777177",
+        "888888888 AMB",
+        "999999999 AMB",
         "123456789"
       ])
     end
@@ -76,15 +76,15 @@ describe PolicyOcr::FileProcessor do
       result = File.read(output_path).split("\n")
       expect(result).to eq([
         "000000000",
-        "111111111 ERR",
+        "711111111",
         "222222222 ERR",
-        "333333333 ERR",
+        "333393333",
         "444444444 ERR",
-        "555555555 ERR",
-        "666666666 ERR",
-        "777777777 ERR",
-        "888888888 ERR",
-        "999999999 ERR",
+        "555555555 AMB",
+        "666666666 AMB",
+        "777777177",
+        "888888888 AMB",
+        "999999999 AMB",
         "123456789"
       ])
     end
