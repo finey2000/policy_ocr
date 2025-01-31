@@ -1,11 +1,20 @@
 require_relative '../../lib/policy_ocr/file_processor'
-require_relative '../../lib/policy_ocr/digits'
 require_relative '../../lib/policy_ocr/errors'
+
+ONE = "   " +
+      "  |" +
+      "  |"
+      .freeze
+
+SEVEN = " _ " +
+        "  |" +
+        "  |"
+        .freeze
 
 describe PolicyOcr::PolicyNumber do
 
   describe "#new" do
-    subject { described_class.new(number) }
+    subject { described_class.new(number, encoded_form: []) }
 
     let(:number) { '' }
 
@@ -47,7 +56,7 @@ describe PolicyOcr::PolicyNumber do
   describe "#to_str" do
     subject { policy.to_str }
 
-    let(:policy) { described_class.new(number) }
+    let(:policy) { described_class.new(number, encoded_form: []) }
     let(:number) { '' }
 
     context 'when given a valid number' do
@@ -87,15 +96,15 @@ describe PolicyOcr::PolicyNumber do
 
       let(:encoded_form) do
         [
-          PolicyOcr::Digits::ONE,
-          PolicyOcr::Digits::ONE,
-          PolicyOcr::Digits::ONE,
-          PolicyOcr::Digits::ONE,
-          PolicyOcr::Digits::ONE,
-          PolicyOcr::Digits::ONE,
-          PolicyOcr::Digits::ONE,
-          PolicyOcr::Digits::ONE,
-          PolicyOcr::Digits::ONE
+          ONE,
+          ONE,
+          ONE,
+          ONE,
+          ONE,
+          ONE,
+          ONE,
+          ONE,
+          ONE
         ]
       end
 
@@ -129,15 +138,15 @@ describe PolicyOcr::PolicyNumber do
 
       let(:encoded_form) do
         [
-          PolicyOcr::Digits::ONE,
-          PolicyOcr::Digits::ONE,
-          PolicyOcr::Digits::ONE,
-          PolicyOcr::Digits::ONE,
-          PolicyOcr::Digits::ONE,
-          PolicyOcr::Digits::ONE,
-          PolicyOcr::Digits::ONE,
-          PolicyOcr::Digits::ONE,
-          PolicyOcr::Digits::ONE
+          ONE,
+          ONE,
+          ONE,
+          ONE,
+          ONE,
+          ONE,
+          ONE,
+          ONE,
+          ONE
         ]
       end
 
@@ -151,15 +160,15 @@ describe PolicyOcr::PolicyNumber do
 
       let(:encoded_form) do
         [
-          PolicyOcr::Digits::SEVEN,
-          PolicyOcr::Digits::SEVEN,
-          PolicyOcr::Digits::SEVEN,
-          PolicyOcr::Digits::SEVEN,
-          PolicyOcr::Digits::SEVEN,
-          PolicyOcr::Digits::SEVEN,
-          PolicyOcr::Digits::SEVEN,
-          PolicyOcr::Digits::SEVEN,
-          PolicyOcr::Digits::SEVEN
+          SEVEN,
+          SEVEN,
+          SEVEN,
+          SEVEN,
+          SEVEN,
+          SEVEN,
+          SEVEN,
+          SEVEN,
+          SEVEN
         ]
       end
 
@@ -173,14 +182,14 @@ describe PolicyOcr::PolicyNumber do
 
       let(:encoded_form) do
         [
-          PolicyOcr::Digits::SEVEN,
-          PolicyOcr::Digits::SEVEN,
-          PolicyOcr::Digits::SEVEN,
-          PolicyOcr::Digits::SEVEN,
-          PolicyOcr::Digits::SEVEN,
-          PolicyOcr::Digits::SEVEN,
-          PolicyOcr::Digits::ONE,
-          PolicyOcr::Digits::SEVEN,
+          SEVEN,
+          SEVEN,
+          SEVEN,
+          SEVEN,
+          SEVEN,
+          SEVEN,
+          ONE,
+          SEVEN,
           " | " +
           "  |" +
           "  |"

@@ -24,7 +24,7 @@ module PolicyOcr
     #
     # @param number [String] the policy number
     # @raise [RuntimeError] if the number is not a valid string
-    def initialize(number, encoded_form: nil, run_checks: true)
+    def initialize(number, encoded_form:, run_checks: true)
       raise InvalidPolicyNumberError, 'Number must be a valid string' if number.class != String || number.empty?
 
       @number = number
