@@ -1,5 +1,7 @@
 require_relative 'checksum_validator'
 require_relative 'digits'
+require_relative 'log_handler'
+require_relative 'errors'
 
 module PolicyOcr
   # The PolicyNumber class represents a policy number and provides methods
@@ -23,7 +25,7 @@ module PolicyOcr
     # @param number [String] the policy number
     # @raise [RuntimeError] if the number is not a valid string
     def initialize(number, encoded_form: nil, run_checks: true)
-      raise ArgumentError.new('Number must be a valid string') if number.class != String || number.empty?
+      raise InvalidPolicyNumberError, 'Number must be a valid string' if number.class != String || number.empty?
 
       @number = number
       @encoded_form = encoded_form
@@ -77,7 +79,7 @@ module PolicyOcr
     # Precomputes corrections map if not already initialized
     def self.precomputed_corrections_map
       @precomputed_corrections_map ||= begin
-
+      LogHandler.info('precomputing corrections')
         precomputed_map = {}
         Digits::MAP.each_key do |digit_code|
           CORRECTIONS_MAP.each do |char, replacements|

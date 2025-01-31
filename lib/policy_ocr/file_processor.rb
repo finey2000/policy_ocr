@@ -1,5 +1,7 @@
 require_relative 'lines_reader'
 require 'fileutils'
+require_relative 'errors'
+require_relative 'log_handler'
 
 module PolicyOcr
   # The FileProcessor class is responsible for processing input files
@@ -34,6 +36,9 @@ module PolicyOcr
       (0...lines.size).step(4) do |i|
         @policy_numbers << LinesReader.parse(lines[i, 3])
       end
+    rescue StandardError => e
+      LogHandler.error(e)
+      raise FileProcessingError, "Failed to process file: #{path}"
     end
 
     # Writes policy numbers to a text file.
@@ -44,6 +49,9 @@ module PolicyOcr
       results = policy_numbers.map(&:to_str)
       FileUtils.mkdir_p(File.dirname(path))
       File.write(output_path, results.join("\n"), mode: 'a')
+    rescue StandardError => e
+      ErrorHandler.log_error(e)
+      raise FileProcessingError, "Failed to export file: #{output_path}"
     end
   end
 end

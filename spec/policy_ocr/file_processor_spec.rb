@@ -1,4 +1,5 @@
 require_relative '../../lib/policy_ocr/file_processor'
+require_relative '../../lib/policy_ocr/errors'
 
 describe PolicyOcr::FileProcessor do
   describe "#import" do
@@ -25,6 +26,14 @@ describe PolicyOcr::FileProcessor do
           "123456789"
         ]
       )
+    end
+
+    context 'when given an invalid file' do
+      let(:input_file) { fixture_path('samplex.txt') }
+
+      it 'raises an FileProcessingError' do
+        expect { subject }.to raise_error(PolicyOcr::FileProcessingError)
+      end
     end
   end
 

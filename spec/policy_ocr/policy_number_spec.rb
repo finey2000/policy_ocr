@@ -1,5 +1,6 @@
 require_relative '../../lib/policy_ocr/file_processor'
 require_relative '../../lib/policy_ocr/digits'
+require_relative '../../lib/policy_ocr/errors'
 
 describe PolicyOcr::PolicyNumber do
 
@@ -29,16 +30,16 @@ describe PolicyOcr::PolicyNumber do
     context 'when given a non strong' do
       let(:number) { nil }
 
-      it "raises argument error" do
-        expect { subject }.to raise_error(ArgumentError, 'Number must be a valid string')
+      it "raises an error" do
+        expect { subject }.to raise_error(PolicyOcr::InvalidPolicyNumberError, 'Number must be a valid string')
       end
     end
 
     context 'when given an empty string' do
       let(:number) { '' }
 
-      it 'raises an ArgumentError' do
-        expect { subject }.to raise_error(ArgumentError, 'Number must be a valid string')
+      it 'raises an InvalidPolicyNumberError' do
+        expect { subject }.to raise_error(PolicyOcr::InvalidPolicyNumberError, 'Number must be a valid string')
       end
     end
   end
