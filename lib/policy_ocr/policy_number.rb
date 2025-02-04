@@ -7,7 +7,7 @@ module PolicyOcr
   # The PolicyNumber class represents a policy number and provides methods
   # to validate and format the policy number.
   class PolicyNumber
-    attr_accessor :number, :valid, :illegible_count, :encoded_form, :corrections, :correct_number
+    attr_reader :number, :valid, :correct_number, :illegible_count
 
     alias valid? valid
 
@@ -44,7 +44,7 @@ module PolicyOcr
     def str_prefix
       if valid_number?
         ''
-      elsif corrections.size > 1
+      elsif @corrections.size > 1
         ' AMB'
       elsif illegible_count.positive?
         ' ILL'
@@ -66,14 +66,14 @@ module PolicyOcr
     def validate_and_correct
       @valid = illegible_count.zero? && ChecksumValidator.valid?(number)
 
-      return if valid || encoded_form.nil?
+      return if valid || @encoded_form.nil?
 
       @corrections = guess_corrections.select do |correction|
         correction.count('?').zero? &&  ChecksumValidator.valid?(correction)
       end
 
-      @correct_number = corrections.first if corrections.size == 1
-      corrections
+      @correct_number = @corrections.first if @corrections.size == 1
+      @corrections
     end
 
     # Precomputes corrections map if not already initialized
@@ -104,7 +104,7 @@ module PolicyOcr
     def guess_corrections
       possible_corrections = []
 
-      encoded_form.each_with_index do |digit_code, index|
+      @encoded_form.each_with_index do |digit_code, index|
         next unless digit_code.size == 9
 
         corrections = self.class.precomputed_corrections_map[digit_code] || generate_corrections(digit_code)
